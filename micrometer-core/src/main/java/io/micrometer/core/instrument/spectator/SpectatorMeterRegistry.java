@@ -21,6 +21,7 @@ import io.micrometer.core.instrument.*;
 import io.micrometer.core.instrument.AbstractMeterRegistry;
 import io.micrometer.core.instrument.Clock;
 import io.micrometer.core.instrument.ImmutableTag;
+import io.micrometer.core.instrument.Meter;
 import io.micrometer.core.instrument.Tag;
 import io.micrometer.core.instrument.stats.hist.Histogram;
 import io.micrometer.core.instrument.stats.quantile.Quantiles;
@@ -169,7 +170,7 @@ public class SpectatorMeterRegistry extends AbstractMeterRegistry {
     }
 
     @Override
-    public MeterRegistry register(io.micrometer.core.instrument.Meter meter) {
+    public Meter meter(io.micrometer.core.instrument.Meter meter) {
         AbstractMeter<io.micrometer.core.instrument.Meter> spectatorMeter = new AbstractMeter<io.micrometer.core.instrument.Meter>(spectatorClock, spectatorId(registry, meter.getName(), meter.getTags()), meter) {
             @Override
             public Iterable<Measurement> measure() {
@@ -183,7 +184,7 @@ public class SpectatorMeterRegistry extends AbstractMeterRegistry {
         };
 
         meterMap.put(spectatorMeter, meter);
-        return this;
+        return meter;
     }
 
     @Override

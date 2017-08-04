@@ -85,7 +85,7 @@ public class ExecutorServiceMetrics implements MeterBinder {
             return;
         }
 
-        registry.register(Meters.build(name)
+        registry.meter(Meters.build(name)
                 .type(Meter.Type.Counter)
                 .tags(tags)
                 .create(tp, (n, tpRef) -> Arrays.asList(

@@ -106,7 +106,7 @@ public class DropwizardMeterRegistry extends AbstractMeterRegistry {
     }
 
     @Override
-    public MeterRegistry register(Meter meter) {
+    public Meter meter(Meter meter) {
         MapAccess.computeIfAbsent(meterMap, new MeterId(meter.getName(), meter.getTags()), id -> {
             for (int i = 0; i < meter.measure().size(); i++) {
                 final int index = i;
@@ -115,7 +115,7 @@ public class DropwizardMeterRegistry extends AbstractMeterRegistry {
             return meter;
         });
 
-        return this;
+        return meter;
     }
 
     @Override

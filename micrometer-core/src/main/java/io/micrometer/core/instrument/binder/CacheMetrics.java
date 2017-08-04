@@ -42,7 +42,7 @@ public class CacheMetrics implements MeterBinder {
     public void bindTo(MeterRegistry registry) {
         registry.gauge(name + "_size", tags, cache, Cache::size);
 
-        registry.register(Meters.build(name + "_requests")
+        registry.meter(Meters.build(name + "_requests")
                 .type(Meter.Type.Counter)
                 .create(cache, (n, cacheRef) -> {
                     CacheStats stats = cacheRef.stats();

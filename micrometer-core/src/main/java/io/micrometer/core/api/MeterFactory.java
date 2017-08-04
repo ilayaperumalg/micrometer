@@ -54,7 +54,7 @@ public class MeterFactory {
 //  }
 
   public static Meter meter(Meter meter){
-    Config.registry.get().register(meter);
+    Config.registry.get().meter(meter);
     return meter;
   }
 

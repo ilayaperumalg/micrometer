@@ -91,8 +91,8 @@ public class NoOpRegistry implements MeterRegistry {
   }
 
   @Override
-  public MeterRegistry register(Meter meter) {
-    return this;
+  public Meter meter(Meter meter) {
+    return meter;
   }
 
   @Override

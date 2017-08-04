@@ -84,7 +84,7 @@ class PrometheusMeterRegistryTest {
     @Test
     void typedCustomMeters() {
         AtomicLong n = new AtomicLong();
-        registry.register(Meters.build("counter")
+        registry.meter(Meters.build("counter")
                 .type(Meter.Type.Counter)
                 .create(n, (name, counter) -> singletonList(new Measurement(name, emptyList(), (double) n.incrementAndGet()))));
 
@@ -98,7 +98,7 @@ class PrometheusMeterRegistryTest {
     void compositeCounters() throws InterruptedException {
         Set<Integer> ns = new ConcurrentSkipListSet<>();
 
-        registry.register(Meters.build("integers")
+        registry.meter(Meters.build("integers")
                 .type(Meter.Type.Counter)
                 .create(ns, (name, nsRef) -> Arrays.asList(
                         new Measurement(name, singletonList(Tag.of("parity", "even")), ns.stream().filter(n -> n % 2 == 0).count()),

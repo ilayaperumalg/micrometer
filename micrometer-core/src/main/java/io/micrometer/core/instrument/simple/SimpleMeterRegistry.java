@@ -81,9 +81,9 @@ public class SimpleMeterRegistry extends AbstractMeterRegistry {
     }
 
     @Override
-    public MeterRegistry register(Meter meter) {
+    public Meter meter(Meter meter) {
         meterMap.put(new MeterId(meter.getName(), meter.getTags()), meter);
-        return this;
+        return meter;
     }
 
     @Override

@@ -179,7 +179,7 @@ public class PrometheusMeterRegistry extends AbstractMeterRegistry {
     }
 
     @Override
-    public MeterRegistry register(Meter meter) {
+    public Meter meter(Meter meter) {
         Collector collector = new Collector() {
             @Override
             public List<MetricFamilySamples> collect() {
@@ -216,7 +216,7 @@ public class PrometheusMeterRegistry extends AbstractMeterRegistry {
         registry.register(collector);
         collectorMap.put(meter.getName(), collector);
         meterMap.put(new MeterId(meter.getName(), meter.getTags()), meter);
-        return this;
+        return meter;
     }
 
     /**
