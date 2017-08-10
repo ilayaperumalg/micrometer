@@ -33,7 +33,7 @@ class CounterTest {
     @ParameterizedTest
     @ArgumentsSource(MeterRegistriesProvider.class)
     void increment(MeterRegistry registry) {
-        Counter c = registry.counter("myCounter");
+        Counter c = registry.meter("myCounter").counter();
         c.increment();
         clock(registry).addAndGet(1, TimeUnit.SECONDS);
         assertThat(c.count()).isEqualTo(1.0, offset(1e-12));
@@ -49,7 +49,7 @@ class CounterTest {
     @ParameterizedTest
     @ArgumentsSource(MeterRegistriesProvider.class)
     void incrementAmount(MeterRegistry registry) {
-        Counter c = registry.counter("myCounter");
+        Counter c = registry.meter("myCounter").counter();
         c.increment(2);
         c.increment(0);
         clock(registry).addAndGet(1, TimeUnit.SECONDS);
@@ -60,7 +60,7 @@ class CounterTest {
     @ParameterizedTest
     @ArgumentsSource(MeterRegistriesProvider.class)
     void heisenCounter(MeterRegistry registry) {
-        AtomicLong n = registry.counter("heisen", new AtomicLong(0));
+        AtomicLong n = registry.meter("heisen").counter(new AtomicLong(0));
         n.incrementAndGet();
 
         Meter c = registry.findMeter(Meter.class, "heisen").get();

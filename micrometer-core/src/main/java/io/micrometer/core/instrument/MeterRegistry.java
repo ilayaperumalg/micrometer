@@ -285,4 +285,8 @@ public interface MeterRegistry {
     default <T extends Map<?, ?>> T mapSize(T map, String name, String... tags) {
         return mapSize(map, name, zip(tags));
     }
+
+    default MeterIdBuilder meter(String name){
+        return new MeterIdBuilder(name, this);
+    }
 }

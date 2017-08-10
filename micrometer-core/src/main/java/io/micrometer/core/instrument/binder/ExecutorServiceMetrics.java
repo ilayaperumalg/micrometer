@@ -86,19 +86,19 @@ public class ExecutorServiceMetrics implements MeterBinder {
         }
 
         // queued tasks = tasks - completed - active
-        registry.counter(name + "_tasks", tp, tpRef -> tpRef.getTaskCount() + tpRef.getCompletedTaskCount() + tpRef.getActiveCount());
-        registry.counter(name + "_completed", tp, ThreadPoolExecutor::getCompletedTaskCount);
+        registry.meter(name + "_tasks").gauge(tp, tpRef -> tpRef.getTaskCount() + tpRef.getCompletedTaskCount() + tpRef.getActiveCount());
+        registry.meter(name + "_completed").gauge(tp, ThreadPoolExecutor::getCompletedTaskCount);
 
-        registry.gauge(name + "_active", tp, ThreadPoolExecutor::getActiveCount);
-        registry.gauge(name + "_queue_size", tags, tp, tpRef -> tpRef.getQueue().size());
-        registry.gauge(name + "_pool_size", tags, tp, ThreadPoolExecutor::getPoolSize);
+        registry.meter(name + "_active").gauge(tp, ThreadPoolExecutor::getActiveCount);
+        registry.meter(name + "_queue_size").tags(tags).gauge(tp, tpRef -> tpRef.getQueue().size());
+        registry.meter(name + "_pool_size").tags(tags).gauge(tp, ThreadPoolExecutor::getPoolSize);
     }
 
     private void monitor(MeterRegistry registry, ForkJoinPool fj) {
-        registry.counter(name + "_steal_count", fj, ForkJoinPool::getStealCount);
+        registry.meter(name + "_steal_count").gauge(fj, ForkJoinPool::getStealCount);
 
-        registry.gauge(name + "_queued_tasks", fj, ForkJoinPool::getQueuedTaskCount);
-        registry.gauge(name + "_active", fj, ForkJoinPool::getActiveThreadCount);
-        registry.gauge(name + "_running_threads", fj, ForkJoinPool::getRunningThreadCount);
+        registry.meter(name + "_queued_tasks").gauge(fj, ForkJoinPool::getQueuedTaskCount);
+        registry.meter(name + "_active").gauge(fj, ForkJoinPool::getActiveThreadCount);
+        registry.meter(name + "_running_threads").gauge(fj, ForkJoinPool::getRunningThreadCount);
     }
 }
